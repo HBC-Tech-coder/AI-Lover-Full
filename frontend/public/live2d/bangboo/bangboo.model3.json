@@ -1,0 +1,15 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "bangboo.moc3",
+    "Textures": [
+      "bangboo.tex/texture_00.png",
+      "bangboo.tex/texture_01.png",
+      "bangboo.tex/texture_02.png",
+      "bangboo.tex/texture_03.png",
+      "bangboo.tex/texture_04.png"
+    ],
+    "Physics": "bangboo.physics3.json",
+    "DisplayInfo": "bangboo.cdi3.json"
+  }
+}
