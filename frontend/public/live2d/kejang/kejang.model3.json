@@ -1,0 +1,11 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "kejang.moc3",
+    "Textures": [
+      "kejang.tex/texture_00.png"
+    ],
+    "Physics": "kejang.physics3.json",
+    "DisplayInfo": "kejang.cdi3.json"
+  }
+}

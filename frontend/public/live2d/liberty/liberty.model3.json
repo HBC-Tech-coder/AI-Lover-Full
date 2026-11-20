@@ -1,0 +1,28 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "liberty.moc3",
+    "Textures": [
+      "liberty.tex/texture_00.png",
+      "liberty.tex/texture_01.png",
+      "liberty.tex/texture_02.png"
+    ],
+    "Physics": "liberty.physics3.json",
+    "DisplayInfo": "liberty.cdi3.json"
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": []
+    }
+  ]
+}
