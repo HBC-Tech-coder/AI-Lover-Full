@@ -1,0 +1,63 @@
+# Keep deployment secrets out of git history.
+# secrets.env is read at MCP boot time (see start_mcp_servers.sh).
+secrets.env
+secrets.env.*
+!secrets.env.example
+.env
+.env.*
+!.env.example
+.env.local
+*.bak
+*.bak.*
+*.bak*
+._*
+.memory/
+local_logs/
+local_runtime/
+local_hardware_config.json
+.venv-hand-gesture/
+frontend/.local-dev-server*.log
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Node / Next.js generated output
+node_modules/
+.next/
+out/
+build/
+dist/
+dist-windows/
+dist-customer/
+release/
+frontend/public/downloads/*.zip
+*.tsbuildinfo
+next-env.d.ts
+
+# Runtime data and local analytics cache
+frontend/public/generated-live2d/
+frontend/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Built binaries and packaged apps
+tenapp/bin/
+server/bin/
+*.exe
+*.dll
+*.so
+*.dylib
+*.apk
+*.ipa
+*.dmg
+
+# Signing keys and private certificates
+certs/
+*.jks
+*.keystore
+*.pem
+*.p12
+*.pfx
+
+.tmp/

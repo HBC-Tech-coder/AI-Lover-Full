@@ -1,0 +1,67 @@
+{
+  "type": "extension",
+  "name": "client_control_tool_python",
+  "version": "0.1.0",
+  "dependencies": [
+    {
+      "type": "system",
+      "name": "ten_runtime_python",
+      "version": "0.11"
+    },
+    {
+      "type": "system",
+      "name": "ten_ai_base",
+      "version": "0.7"
+    }
+  ],
+  "api": {
+    "cmd_in": [
+      {
+        "name": "tool_call",
+        "property": {
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "arguments": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "required": [
+            "name"
+          ]
+        }
+      }
+    ],
+    "cmd_out": [
+      {
+        "name": "tool_register",
+        "property": {
+          "properties": {
+            "tool": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        }
+      }
+    ],
+    "data_out": [
+      {
+        "name": "text_data",
+        "property": {
+          "properties": {}
+        }
+      }
+    ]
+  },
+  "package": {
+    "include": [
+      "manifest.json",
+      "property.json",
+      "*.py",
+      "requirements.txt"
+    ]
+  }
+}

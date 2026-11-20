@@ -1,0 +1,127 @@
+AI-Lover Local Connector 2.0.4 操作手册
+
+一、它是做什么的
+
+AI-Lover 有两种使用方式：
+
+1. 云端模式
+   打开 https://ai.vituralmodel.com，通过 Local Connector 连接客户电脑上的仿生头、Arduino 手、ORCA 手、摄像头和局域网 GPU 数字人服务。
+
+2. 本地离线控制台
+   运行 START-HERE.bat 后，打开 http://127.0.0.1:3000/local-control。
+   这个页面不包含 AI 对话，但可以测试摄像头、手势骨架、粒子特效、仿生头、Arduino 手和 ORCA 手。
+   网络不好或完全断网时，优先用这个页面调试硬件。
+
+二、第一次运行
+
+1. 右键 zip，选择“全部解压”。不要只复制其中某一个 exe 或 bat。
+2. 进入解压后的文件夹。
+3. Windows 双击 START-HERE.bat。
+4. 如果 Windows 安全提示拦截，点击“更多信息”，再点击“仍要运行”。
+5. 等待 10 到 30 秒，浏览器会打开 http://127.0.0.1:3000。
+6. 如果只是本地调试硬件，请打开 http://127.0.0.1:3000/local-control。
+7. 如果要连接云端网页，请打开 https://ai.vituralmodel.com，进入设置里的“连接本地设备向导”，生成配对码，把配对码输入黑色窗口并回车。
+
+三、本地离线控制台怎么用
+
+地址：http://127.0.0.1:3000/local-control
+
+功能：
+- 最大化显示手势摄像头画面。
+- 在画面上叠加手部骨架和粒子特效。
+- 直接把手势发送给本机机械手 bridge。
+- 测试 Arduino 手常用动作。
+- 测试 Arduino 演示模式和演奏模式。
+- 测试仿生头连接、喇叭、麦克风、音量和表情动作。
+- 在没有互联网时，仍然可以调试头和手。
+
+注意：
+- 本地离线控制台不做 AI 对话。
+- 如果要真实控制机械手，请关闭 Dry-run 调试，并确认“启用 Arduino 输出”或“启用 ORCA 输出”已打开。
+
+四、多台 Arduino 手怎么连接
+
+Local Connector 支持同时控制多个 Arduino 手。
+
+写法：Arduino 串口输入框里填写多个 COM 号，用英文逗号分隔。
+示例：COM5,COM6
+
+效果：同一个手势命令会同时发送到 COM5 和 COM6。
+
+建议：
+1. 打开 Windows 设备管理器。
+2. 找到“端口（COM 和 LPT）”。
+3. 插拔每个 Arduino，确认分别出现哪个 COM 号。
+4. 把多个 COM 号填入本地离线控制台或网页设置。
+5. 关闭 Dry-run 后再测试真实动作。
+
+五、Arduino 手和 ORCA 手串口怎么判断
+
+常见判断：
+- CH340 / WCH / Arduino / CP210 / FTDI 通常是 Arduino 手。
+- U2D2 / Dynamixel / Robotis 通常是 ORCA 手。
+- 如果看不到任何 COM 号，通常是驱动、USB 数据线或供电问题。
+
+排查步骤：
+1. 确认 USB 线是数据线，不是只能充电的线。
+2. 确认机械手外接电源已打开。
+3. 打开 Windows 设备管理器 -> 端口（COM 和 LPT）。
+4. 插拔设备，看哪个 COM 号出现或消失。
+5. 如果没有 COM 号，安装 CH340、CP210x、FTDI 或 Robotis 对应驱动。
+6. 回到本地离线控制台，点击“检测机械手状态和串口”。
+
+六、仿生头连接
+
+1. 电脑和仿生头连接同一个 Wi-Fi，或者使用 USB 调试。
+2. 在本地离线控制台或网页设置里填写头部 IP，例如 192.168.110.139。
+3. 点击“启动/重连头部 bridge”。
+4. 点击“检测”。
+5. 点击“喇叭”测试头部音箱。
+6. 点击“麦克风”测试头部麦克风。
+7. 如果头部能动嘴但不发声，重点检查声卡号和 tinymix 路由。
+
+七、GPU 数字人
+
+默认情况下，系统仍然使用 Live2D，CPU 也能运行。
+
+如果客户现场有局域网 GPU 主机，例如 4090，可以在设置里把 GPU worker 地址改成局域网服务地址，例如：
+http://192.168.110.50:8810
+
+云端网页不能直接访问客户内网 IP，所以请先运行 Local Connector，再启用“云端 Local Connector”。这样云端网页会通过客户电脑转发到本地或局域网 GPU worker。
+
+如果没有真正的 MuseTalk / SoulX-LiveAct worker，系统会自动启动本机预览 worker，用头像图验证流程，不会生成真实视频。
+
+八、云端配对 Local Connector
+
+1. 打开 https://ai.vituralmodel.com。
+2. 进入右上角设置。
+3. 找到“连接本地设备向导”。
+4. 勾选“启用云端 Local Connector”。
+5. 点击“生成”得到配对码。
+6. 把配对码输入 START-HERE.bat 的黑色窗口并回车。
+7. 回到网页点击“检测 Local Connector”。
+
+九、常见问题
+
+1. 云端网页显示 Connector 未连接
+   本地黑色窗口没有运行，或者配对码不一致。重新运行 START-HERE.bat，再重新生成配对码。
+
+2. 云端网页显示头部异常 502 或手部异常 502
+   Connector 已经连上云端，但本机头部 bridge 或机械手 bridge 没启动。到本地离线控制台点击启动/重连。
+
+3. 本地离线控制台摄像头打不开
+   用 Chrome 或 Edge 打开 http://127.0.0.1:3000/local-control，并允许摄像头权限。
+
+4. 骨架能识别，但机械手不动
+   检查 Dry-run 是否关闭、Arduino 输出是否开启、COM 号是否正确、外接电源是否打开。
+
+5. 多个 Arduino 只有一个动
+   确认串口写法是 COM5,COM6，不要写中文逗号；确认两个 Arduino 都在设备管理器里存在。
+
+十、给售后排查时请提供
+
+1. START-HERE.bat 黑色窗口截图。
+2. 本地离线控制台截图。
+3. 机械手测试台或本地控制台里的串口列表截图。
+4. Windows 设备管理器“端口（COM 和 LPT）”截图。
+5. 头部 IP、Arduino COM 号、ORCA COM 号、GPU worker 地址。

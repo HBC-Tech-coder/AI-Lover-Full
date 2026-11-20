@@ -1,0 +1,203 @@
+neutral_position:
+  middle_pip: 9.164627075195312
+  pinky_mcp: 4.0912017822265625
+  pinky_pip: -2.3703384399414062
+  pinky_abd: -6.060611724853516
+  middle_abd: 4.906139373779297
+  index_abd: -8.056999206542969
+  index_mcp: 5.2120208740234375
+  index_pip: 21.753936767578125
+  thumb_mcp: 34.91576385498047
+  thumb_dip: 7.500312805175781
+  thumb_abd: 3.697225570678711
+  thumb_cmc: -43.76293182373047
+  ring_abd: 1.2609939575195312
+  ring_pip: 10.698295593261719
+  ring_mcp: 16.952064514160156
+  middle_mcp: 12.202369689941406
+  wrist: -25.33254623413086
+port: COM4
+baudrate: 3000000
+motor_type: dynamixel
+version: 0.2.1
+max_current: 200
+type: right
+control_mode: current_based_position
+motor_ids:
+- 1
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+- 11
+- 12
+- 13
+- 14
+- 15
+- 16
+- 17
+joint_ids:
+- middle_pip
+- pinky_mcp
+- pinky_pip
+- pinky_abd
+- middle_abd
+- index_abd
+- index_mcp
+- index_pip
+- thumb_mcp
+- thumb_dip
+- thumb_abd
+- thumb_cmc
+- ring_abd
+- ring_pip
+- ring_mcp
+- middle_mcp
+- wrist
+joint_to_motor_map:
+  middle_pip: -1
+  pinky_mcp: -2
+  pinky_pip: -3
+  pinky_abd: 4
+  middle_abd: 5
+  index_abd: 6
+  index_mcp: -7
+  index_pip: -8
+  thumb_mcp: 9
+  thumb_dip: -10
+  thumb_abd: 11
+  thumb_cmc: -12
+  ring_abd: -13
+  ring_pip: -14
+  ring_mcp: -15
+  middle_mcp: -16
+  wrist: 17
+joint_roms:
+  wrist:
+  - -65
+  - 35
+  thumb_cmc:
+  - -45
+  - 33
+  thumb_abd:
+  - -18
+  - 55
+  thumb_mcp:
+  - -25
+  - 100
+  thumb_dip:
+  - -15
+  - 107
+  index_abd:
+  - -30
+  - 25
+  index_mcp:
+  - -25
+  - 100
+  index_pip:
+  - -15
+  - 107
+  middle_abd:
+  - -27
+  - 27
+  middle_mcp:
+  - -25
+  - 100
+  middle_pip:
+  - -15
+  - 107
+  ring_abd:
+  - -27
+  - 27
+  ring_mcp:
+  - -25
+  - 100
+  ring_pip:
+  - -15
+  - 107
+  pinky_abd:
+  - -30
+  - 30
+  pinky_mcp:
+  - -25
+  - 100
+  pinky_pip:
+  - -15
+  - 107
+calibration_current: 150
+calibration_step_size: 0.03
+calibration_step_period: 0.05
+calibration_num_stable: 3
+calibration_threshold: 0.05
+calibration_sequence:
+- step: 1
+  joints:
+    thumb_cmc: flex
+- step: 2
+  joints:
+    thumb_cmc: extend
+- step: 3
+  joints:
+    thumb_abd: flex
+- step: 4
+  joints:
+    thumb_abd: extend
+- step: 5
+  joints:
+    thumb_mcp: flex
+- step: 6
+  joints:
+    thumb_mcp: extend
+- step: 7
+  joints:
+    thumb_dip: flex
+- step: 8
+  joints:
+    thumb_dip: extend
+- step: 9
+  joints:
+    index_abd: flex
+    middle_abd: flex
+    ring_abd: flex
+    pinky_abd: flex
+- step: 10
+  joints:
+    index_abd: extend
+    middle_abd: extend
+    ring_abd: extend
+    pinky_abd: extend
+- step: 11
+  joints:
+    index_mcp: flex
+    middle_mcp: flex
+    ring_mcp: flex
+    pinky_mcp: flex
+- step: 12
+  joints:
+    index_mcp: extend
+    middle_mcp: extend
+    ring_mcp: extend
+    pinky_mcp: extend
+- step: 13
+  joints:
+    index_pip: flex
+    middle_pip: flex
+    ring_pip: flex
+    pinky_pip: flex
+- step: 14
+  joints:
+    index_pip: extend
+    middle_pip: extend
+    ring_pip: extend
+    pinky_pip: extend
+- step: 15
+  joints:
+    wrist: flex
+- step: 16
+  joints:
+    wrist: extend

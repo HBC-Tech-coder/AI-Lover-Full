@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-Lover Local Connector 2.0.4 图文操作手册</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #182235;
+      --muted: #60708a;
+      --line: #d8e2f0;
+      --blue: #3569ff;
+      --bg: #f7faff;
+      --ok: #eaf9ef;
+      --warn: #fff7df;
+      --danger: #fff0f0;
+      --dark: #101827;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+      line-height: 1.7;
+    }
+    main { max-width: 1080px; margin: 0 auto; padding: 28px 32px 56px; }
+    h1 { margin: 0 0 8px; font-size: 34px; }
+    h2 { margin: 34px 0 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+    h3 { margin: 18px 0 8px; }
+    p { margin: 8px 0; }
+    code { border-radius: 6px; background: #eef3ff; padding: 2px 7px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; }
+    th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+    th { background: #eef4ff; }
+    .lead { color: var(--muted); font-size: 17px; }
+    .card { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 16px 18px; margin: 14px 0; }
+    .ok { background: var(--ok); border-color: #9bd9aa; }
+    .warn { background: var(--warn); border-color: #f0c86e; }
+    .danger { background: var(--danger); border-color: #e6aaaa; }
+    .figure { border: 1px solid var(--line); border-radius: 12px; background: var(--dark); color: #fff; padding: 18px; margin: 14px 0 24px; }
+    .figure-title { color: #dce7ff; font-weight: 700; margin-bottom: 12px; }
+    .desktop { background: #111827; border: 1px solid #263854; border-radius: 10px; padding: 14px; }
+    .file-row, .ui-row { display: flex; gap: 10px; align-items: center; border: 1px solid #334466; background: #182237; border-radius: 8px; padding: 10px 12px; margin: 8px 0; }
+    .file-icon { width: 30px; height: 26px; border-radius: 5px; background: #ffd261; flex: 0 0 auto; }
+    .button { display: inline-block; border-radius: 8px; background: var(--blue); color: #fff; font-weight: 700; padding: 8px 14px; margin: 4px 4px 4px 0; }
+    .button.secondary { background: #202b45; border: 1px solid #4b5d80; }
+    .input { display: inline-block; min-width: 190px; padding: 8px 12px; border-radius: 8px; border: 1px solid #4b5d80; background: #111a2d; color: #e9f0ff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .badge { display: inline-block; border-radius: 999px; background: #eef3ff; padding: 4px 10px; color: #294fb7; font-size: 13px; font-weight: 700; }
+    .stage { display: grid; grid-template-columns: 1fr 330px; gap: 12px; min-height: 280px; }
+    .camera { display: grid; place-items: center; border: 1px solid #3b4a66; border-radius: 10px; background: #0b1020; color: #9fb4d8; min-height: 260px; text-align: center; }
+    .side { border: 1px solid #3b4a66; border-radius: 10px; background: #172033; padding: 12px; }
+    @media (max-width: 720px) {
+      main { padding: 20px 16px 40px; }
+      h1 { font-size: 28px; }
+      .stage { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>AI-Lover Local Connector 2.0.4 图文操作手册</h1>
+  <p class="lead">给第一次使用的同事和客户看的说明：怎么启动、怎么连接云端、怎么离线测试头和手、多台 Arduino 手怎么填写，以及 GPU 数字人怎么接入。</p>
+
+  <div class="card ok">
+    <strong>最重要的一句话：</strong>
+    云端对话打开 <code>https://ai.vituralmodel.com</code>；现场调硬件、网络不好或断网时，先运行 <code>START-HERE.bat</code>，再打开 <code>http://127.0.0.1:3000/local-control</code>。
+  </div>
+
+  <h2>1. 两种工作模式</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>云端模式</h3>
+      <p>打开 <code>https://ai.vituralmodel.com</code> 进行 AI 对话。云端网页通过 Local Connector 连接客户电脑里的仿生头、机械手和局域网 GPU 数字人服务。</p>
+      <span class="badge">需要互联网</span>
+    </div>
+    <div class="card">
+      <h3>本地离线控制台</h3>
+      <p>打开 <code>http://127.0.0.1:3000/local-control</code>。它不做 AI 对话，但可以低延迟测试摄像头、手势骨架、粒子特效、仿生头和机械手。</p>
+      <span class="badge">断网也能用</span>
+    </div>
+  </div>
+
+  <h2>2. 解压和启动</h2>
+  <ol>
+    <li>右键收到的 zip，选择“全部解压”。</li>
+    <li>不要只复制一个文件，必须保留整个解压目录。</li>
+    <li>进入解压目录，双击 <code>START-HERE.bat</code>。</li>
+    <li>等待 10 到 30 秒，浏览器会打开本地首页。</li>
+    <li>现场调硬件时，打开 <code>http://127.0.0.1:3000/local-control</code>。</li>
+  </ol>
+
+  <div class="figure">
+    <div class="figure-title">图 1：解压后的目录应该像这样</div>
+    <div class="desktop">
+      <div class="file-row"><span class="file-icon"></span><strong>START-HERE.bat</strong><span>先双击它</span></div>
+      <div class="file-row"><span class="file-icon"></span><strong>AI-Lover-Local-Connector-User-Guide-zh.html</strong><span>本手册</span></div>
+      <div class="file-row"><span class="file-icon"></span><strong>frontend / hardware / runtime / tools</strong><span>不要删除</span></div>
+    </div>
+  </div>
+
+  <h2>3. 本地离线控制台</h2>
+  <p>运行 <code>START-HERE.bat</code> 后，打开 <code>http://127.0.0.1:3000/local-control</code>。</p>
+
+  <div class="figure">
+    <div class="figure-title">图 2：本地离线控制台布局</div>
+    <div class="stage">
+      <div class="camera">
+        <div>
+          <div style="font-size:48px;">手势画面</div>
+          <div>这里显示高清摄像头、手部骨架、粒子特效和手势码</div>
+        </div>
+      </div>
+      <div class="side">
+        <div class="ui-row"><span class="button">启动摄像头和手势控制</span></div>
+        <div class="ui-row"><span class="input">COM5,COM6</span><span>多台 Arduino 手</span></div>
+        <div class="ui-row"><span class="button secondary">启动/重连机械手 bridge</span></div>
+        <div class="ui-row"><span class="button secondary">头部喇叭 / 麦克风 / 表情</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>4. 多台 Arduino 手</h2>
+  <p>Local Connector 支持同时控制多个 Arduino 手。在 Arduino 串口输入框里填写多个 COM 号，用英文逗号分隔。</p>
+  <div class="card ok">
+    示例：<code>COM5,COM6</code><br>
+    含义：同一个手势命令会同时发送给 COM5 和 COM6。
+  </div>
+  <p>不要使用中文逗号。真实控制硬件时，关闭 Dry-run，并打开“启用 Arduino 输出”。</p>
+
+  <h2>5. 串口怎么判断</h2>
+  <table>
+    <thead><tr><th>设备提示</th><th>通常是什么</th><th>应该填在哪里</th></tr></thead>
+    <tbody>
+      <tr><td>CH340 / WCH / Arduino / CP210 / FTDI</td><td>Arduino 手</td><td>Arduino 串口，可填多个，例如 COM5,COM6</td></tr>
+      <tr><td>U2D2 / Dynamixel / Robotis</td><td>ORCA 手</td><td>ORCA / Dynamixel 串口，通常填一个</td></tr>
+      <tr><td>完全没有 COM 号</td><td>驱动、USB 线或供电问题</td><td>先检查设备管理器</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. 仿生头连接</h2>
+  <ol>
+    <li>电脑和仿生头连接同一个 Wi-Fi，或者使用 USB 调试。</li>
+    <li>填写头部 IP，例如 <code>192.168.110.139</code>。</li>
+    <li>点击“启动/重连头部 bridge”。</li>
+    <li>点击“检测”。</li>
+    <li>点击“喇叭”测试头部音箱，点击“麦克风”测试头部麦克风。</li>
+  </ol>
+
+  <h2>7. GPU 数字人</h2>
+  <p>默认情况下，系统仍然使用 Live2D，CPU 也能运行。如果客户现场有局域网 GPU 主机，例如 4090，可以在设置里把 GPU worker 地址改成局域网服务地址：</p>
+  <p><code>http://192.168.110.50:8810</code></p>
+  <div class="card warn">
+    云端网页不能直接访问客户内网 IP。请先运行 Local Connector，再启用“云端 Local Connector”。这样云端网页会通过客户电脑转发到本地或局域网 GPU worker。
+  </div>
+  <p>如果没有真正的 MuseTalk / SoulX-LiveAct worker，系统会自动启动本机预览 worker，用头像图验证流程，不会生成真实视频。</p>
+
+  <h2>8. 云端配对 Local Connector</h2>
+  <ol>
+    <li>打开 <code>https://ai.vituralmodel.com</code>。</li>
+    <li>进入右上角设置。</li>
+    <li>找到“连接本地设备向导”。</li>
+    <li>勾选“启用云端 Local Connector”。</li>
+    <li>点击“生成”得到配对码。</li>
+    <li>把配对码输入 <code>START-HERE.bat</code> 的黑色窗口并回车。</li>
+    <li>回到网页点击“检测 Local Connector”。</li>
+  </ol>
+
+  <h2>9. 常见问题</h2>
+  <div class="card warn">
+    <h3>骨架能识别，但机械手不动</h3>
+    <p>检查 Dry-run 是否关闭、Arduino 输出是否开启、COM 号是否正确、外接电源是否打开。</p>
+  </div>
+  <div class="card warn">
+    <h3>云端显示头部异常或手部异常 502</h3>
+    <p>Connector 已经连上云端，但本机头部 bridge 或机械手 bridge 没启动。打开本地离线控制台，点击启动/重连。</p>
+  </div>
+  <div class="card danger">
+    <h3>不要关闭黑色窗口</h3>
+    <p>只要还在控制头和手，<code>START-HERE.bat</code> 的黑色窗口就必须保持运行。</p>
+  </div>
+
+  <h2>10. 售后排查请发这些截图</h2>
+  <ol>
+    <li><code>START-HERE.bat</code> 黑色窗口截图。</li>
+    <li>本地离线控制台截图。</li>
+    <li>机械手测试台或本地控制台里的串口列表截图。</li>
+    <li>Windows 设备管理器“端口（COM 和 LPT）”截图。</li>
+    <li>头部 IP、Arduino COM 号、ORCA COM 号、GPU worker 地址。</li>
+  </ol>
+</main>
+</body>
+</html>

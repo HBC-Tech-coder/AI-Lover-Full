@@ -1,0 +1,373 @@
+{
+  "ten": {
+    "predefined_graphs": [
+      {
+        "name": "voice_assistant",
+        "auto_start": true,
+        "graph": {
+          "nodes": [
+            {
+              "type": "extension",
+              "name": "websocket_server",
+              "addon": "websocket_server",
+              "extension_group": "default",
+              "property": {
+                "port": 8765,
+                "host": "127.0.0.1",
+                "sample_rate": 16000,
+                "channels": 1,
+                "bytes_per_sample": 2
+              }
+            },
+            {
+              "type": "extension",
+              "name": "stt",
+              "addon": "deepgram_asr_python",
+              "extension_group": "stt",
+              "property": {
+                "params": {
+                  "key": "${env:DEEPGRAM_API_KEY}",
+                  "model": "nova-2",
+                  "language": "zh-CN",
+                  "sample_rate": 16000,
+                  "channels": 1,
+                  "encoding": "linear16",
+                  "punctuate": true,
+                  "interim_results": true,
+                  "smart_format": true
+                }
+              }
+            },
+            {
+              "type": "extension",
+              "name": "llm",
+              "addon": "openai_llm2_python",
+              "extension_group": "chatgpt",
+              "property": {
+                "base_url": "${env:OPENAI_BASE_URL|https://api.deepseek.com}",
+                "api_key": "${env:OPENAI_API_KEY}",
+                "frequency_penalty": 0.2,
+                "temperature": 0.8,
+                "model": "deepseek-chat",
+                "max_tokens": 512,
+                "prompt": "你是完美恋人的陪伴型 AI 智能体。\n请自然、温柔、简短地回复，通常 1 到 2 句话。\n不要使用 markdown，避免列表和过长解释。\n可以根据用户语气触发表情、音量、头部和手部动作，但回复文本要适合语音播报。\n为了 TTS 稳定，不要使用 emoji。",
+                "proxy_url": "${env:OPENAI_PROXY_URL|}",
+                "greeting": "你好呀。",
+                "max_memory_length": 20
+              }
+            },
+            {
+              "type": "extension",
+              "name": "tts",
+              "addon": "azure_tts_python",
+              "extension_group": "tts",
+              "property": {
+                "params": {
+                  "subscription": "${env:AZURE_TTS_API_KEY}",
+                  "region": "${env:AZURE_TTS_REGION}",
+                  "speech_recognition_language": "zh-CN",
+                  "output_format": "Raw16Khz16BitMonoPcm",
+                  "propertys": [
+                    [
+                      "Speech_LogFilename",
+                      "azure_tts_log.txt"
+                    ],
+                    [
+                      "SpeechServiceConnection_SynthVoice",
+                      "zh-CN-XiaoxiaoNeural"
+                    ]
+                  ]
+                }
+              }
+            },
+            {
+              "type": "extension",
+              "name": "main_control",
+              "addon": "main_python",
+              "extension_group": "control",
+              "property": {
+                "greeting": "TEN Agent connected. How can I help you today?",
+                "turn_detection_enabled": true,
+                "turn_detection_endpoint": "${env:TEN_TURN_DETECTION_URL|}",
+                "turn_detection_timeout_ms": 800,
+                "turn_detection_max_wait_ms": 1800,
+                "turn_detection_fallback_rules": true
+              }
+            },
+            {
+              "type": "extension",
+              "name": "client_control_tool",
+              "addon": "client_control_tool_python",
+              "extension_group": "default",
+              "property": {}
+            }
+          ],
+          "connections": [
+            {
+              "extension": "main_control",
+              "cmd": [
+                {
+                  "names": [
+                    "tool_register"
+                  ],
+                  "source": [
+                    {
+                      "extension": "client_control_tool"
+                    }
+                  ]
+                }
+              ],
+              "data": [
+                {
+                  "name": "asr_result",
+                  "source": [
+                    {
+                      "extension": "stt"
+                    },
+                    {
+                      "extension": "websocket_server"
+                    }
+                  ]
+                },
+                {
+                  "name": "metrics",
+                  "source": [
+                    {
+                      "extension": "stt"
+                    }
+                  ]
+                },
+                {
+                  "name": "tts_flush_end",
+                  "source": [
+                    {
+                      "extension": "tts"
+                    }
+                  ]
+                }
+              ],
+              "audio_frame": []
+            },
+            {
+              "extension": "websocket_server",
+              "audio_frame": [
+                {
+                  "name": "pcm_frame",
+                  "dest": [
+                    {
+                      "extension": "stt"
+                    }
+                  ]
+                },
+                {
+                  "name": "pcm_frame",
+                  "source": [
+                    {
+                      "extension": "tts"
+                    }
+                  ]
+                }
+              ],
+              "cmd": [],
+              "data": []
+            }
+          ]
+        }
+      },
+      {
+        "name": "voice_assistant_diarization",
+        "auto_start": false,
+        "graph": {
+          "nodes": [
+            {
+              "type": "extension",
+              "name": "websocket_server",
+              "addon": "websocket_server",
+              "extension_group": "default",
+              "property": {
+                "port": 8765,
+                "host": "127.0.0.1",
+                "sample_rate": 16000,
+                "channels": 1,
+                "bytes_per_sample": 2
+              }
+            },
+            {
+              "type": "extension",
+              "name": "stt",
+              "addon": "deepgram_asr_python",
+              "extension_group": "stt",
+              "property": {
+                "params": {
+                  "key": "${env:DEEPGRAM_API_KEY}",
+                  "model": "nova-2",
+                  "language": "zh-CN",
+                  "sample_rate": 16000,
+                  "channels": 1,
+                  "encoding": "linear16",
+                  "punctuate": true,
+                  "interim_results": true,
+                  "smart_format": true
+                }
+              }
+            },
+            {
+              "type": "extension",
+              "name": "llm",
+              "addon": "openai_llm2_python",
+              "extension_group": "chatgpt",
+              "property": {
+                "base_url": "${env:OPENAI_BASE_URL|https://api.deepseek.com}",
+                "api_key": "${env:OPENAI_API_KEY}",
+                "frequency_penalty": 0.2,
+                "temperature": 0.8,
+                "model": "deepseek-chat",
+                "max_tokens": 512,
+                "prompt": "你是完美恋人的陪伴型 AI 智能体。\n请自然、温柔、简短地回复，通常 1 到 2 句话。\n不要使用 markdown，避免列表和过长解释。\n可以根据用户语气触发表情、音量、头部和手部动作，但回复文本要适合语音播报。\n为了 TTS 稳定，不要使用 emoji。",
+                "proxy_url": "${env:OPENAI_PROXY_URL|}",
+                "greeting": "你好呀。",
+                "max_memory_length": 20
+              }
+            },
+            {
+              "type": "extension",
+              "name": "tts",
+              "addon": "azure_tts_python",
+              "extension_group": "tts",
+              "property": {
+                "params": {
+                  "subscription": "${env:AZURE_TTS_API_KEY}",
+                  "region": "${env:AZURE_TTS_REGION}",
+                  "speech_recognition_language": "zh-CN",
+                  "output_format": "Raw16Khz16BitMonoPcm",
+                  "propertys": [
+                    [
+                      "Speech_LogFilename",
+                      "azure_tts_log.txt"
+                    ],
+                    [
+                      "SpeechServiceConnection_SynthVoice",
+                      "zh-CN-XiaoxiaoNeural"
+                    ]
+                  ]
+                }
+              }
+            },
+            {
+              "type": "extension",
+              "name": "main_control",
+              "addon": "main_python",
+              "extension_group": "control",
+              "property": {
+                "greeting": "TEN Agent connected. How can I help you today?",
+                "turn_detection_enabled": true,
+                "turn_detection_endpoint": "${env:TEN_TURN_DETECTION_URL|}",
+                "turn_detection_timeout_ms": 800,
+                "turn_detection_max_wait_ms": 1800,
+                "turn_detection_fallback_rules": true
+              }
+            },
+            {
+              "type": "extension",
+              "name": "client_control_tool",
+              "addon": "client_control_tool_python",
+              "extension_group": "default",
+              "property": {}
+            }
+          ],
+          "connections": [
+            {
+              "extension": "main_control",
+              "cmd": [
+                {
+                  "names": [
+                    "tool_register"
+                  ],
+                  "source": [
+                    {
+                      "extension": "client_control_tool"
+                    }
+                  ]
+                }
+              ],
+              "data": [
+                {
+                  "name": "asr_result",
+                  "source": [
+                    {
+                      "extension": "stt"
+                    },
+                    {
+                      "extension": "websocket_server"
+                    }
+                  ]
+                },
+                {
+                  "name": "metrics",
+                  "source": [
+                    {
+                      "extension": "stt"
+                    }
+                  ]
+                },
+                {
+                  "name": "tts_flush_end",
+                  "source": [
+                    {
+                      "extension": "tts"
+                    }
+                  ]
+                }
+              ],
+              "audio_frame": []
+            },
+            {
+              "extension": "websocket_server",
+              "audio_frame": [
+                {
+                  "name": "pcm_frame",
+                  "dest": [
+                    {
+                      "extension": "stt"
+                    }
+                  ]
+                },
+                {
+                  "name": "pcm_frame",
+                  "source": [
+                    {
+                      "extension": "tts"
+                    }
+                  ]
+                }
+              ],
+              "cmd": [],
+              "data": []
+            }
+          ]
+        }
+      }
+    ],
+    "log": {
+      "handlers": [
+        {
+          "matchers": [
+            {
+              "level": "info"
+            }
+          ],
+          "formatter": {
+            "type": "plain",
+            "colored": true
+          },
+          "emitter": {
+            "type": "console",
+            "config": {
+              "stream": "stdout"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
