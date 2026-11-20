@@ -1,0 +1,11 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "cookie_sheep.moc3",
+    "Textures": [
+      "cookie_sheep.tex/texture_00.png"
+    ],
+    "Physics": "cookie_sheep.physics3.json",
+    "DisplayInfo": "cookie_sheep.cdi3.json"
+  }
+}
