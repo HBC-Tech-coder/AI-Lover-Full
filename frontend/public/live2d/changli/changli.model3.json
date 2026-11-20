@@ -1,0 +1,14 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "changli.moc3",
+    "Textures": [
+      "changli.tex/texture_00.png",
+      "changli.tex/texture_01.png",
+      "changli.tex/texture_02.png",
+      "changli.tex/texture_03.png"
+    ],
+    "Physics": "changli.physics3.json",
+    "DisplayInfo": "changli.cdi3.json"
+  }
+}
